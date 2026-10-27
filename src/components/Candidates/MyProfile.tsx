@@ -3,7 +3,7 @@
 import type React from "react"
 import { useEffect, useState } from "react"
 import axios from "axios"
-import { useParams } from "next/navigation"
+// import { useParams } from "next/navigation"
 import Image from "next/image"
 import { Email, Phone, Cake, Person, Favorite, Home, LocationOn, Work } from "@mui/icons-material"
 import { Card, CardContent, Typography, CircularProgress, Grid, TextField, Button } from "@mui/material"

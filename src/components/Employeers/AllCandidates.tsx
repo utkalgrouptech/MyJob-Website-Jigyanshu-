@@ -38,7 +38,7 @@ interface Candidate {
 const AllCandidates: React.FC = () => {
   const [search, setSearch] = useState("")
   const [candidates, setCandidates] = useState<Candidate[]>([])
-  const [coverImag, setCoverImage] = useState<File | null>(null)
+  const [, setCoverImage] = useState<File | null>(null)
   const [filteredCandidates, setFilteredCandidates] = useState<Candidate[]>([])
   const [openEditDialog, setOpenEditDialog] = useState(false)
   const [selectedCandidates, setSelectedCandidates] = useState<Candidate | null>(null)
@@ -48,7 +48,7 @@ const AllCandidates: React.FC = () => {
   const [open, setOpen] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
-  const [isCreating, setIsCreating] = useState(false)
+  const [isCreating] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [formData, setFormData] = useState({
     firstName: "",
@@ -98,7 +98,7 @@ const AllCandidates: React.FC = () => {
     fetchCandidates()
   }, [])
 
-  const handleRowClick = (candidate: any) => {
+  const handleRowClick = (candidate: Candidate) => {
     setSelectedCandidates(candidate)
     setDetailsOpen(true)
   }

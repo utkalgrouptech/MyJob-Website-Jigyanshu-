@@ -31,7 +31,7 @@ const AppliedJobsPage = () => {
   const storedUserId= localStorage.getItem('userData');
 
   const [appliedJobs, setAppliedJobs] = useState<Job[]>([]);
-  const [userId, setUserId]= useState(storedUserId); // Replace with actual user ID
+  const [userId]= useState(storedUserId); // Replace with actual user ID
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
