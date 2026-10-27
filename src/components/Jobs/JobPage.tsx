@@ -154,8 +154,7 @@ interface Job {
 }
 
 const JobPage = () => {
-  const [view, ] = useState<'grid' | 'list'>('grid');
-  const [, setSortBy] = useState<string>('Default');
+   const view: 'grid' | 'list' = 'grid';
   const [jobList, setJobList] = useState<Job[]>([]);
   const [filteredJobList, setFilteredJobList] = useState<Job[]>([]);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
