@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { navigationItems } from '@/utils/layouts';
-import axios from "axios"
+
 
 const Sidebar: React.FC = () => {
 
