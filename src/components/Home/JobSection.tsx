@@ -17,7 +17,7 @@ const JobSection: React.FC = () => {
   const [searchDegName, setSearchDegName] = useState("");
   const [searchSalary, setSearchSalary] = useState("");
   const [searchOrganization, setSearchOrganization] = useState("");
-  const [view, setView] = useState("grid");
+  const [view] = useState("grid");
 
   useEffect(() => {
     const fetchJobs = async () => {

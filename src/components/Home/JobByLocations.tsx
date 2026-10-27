@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { MapPin, Briefcase, Building } from "lucide-react";
-import { img1, img3, img6, img7, img8, img9 } from "@/assets/Home";
+import { img1, img3,  img7, img8,  } from "@/assets/Home";
 
 const jobLocations = [
   {

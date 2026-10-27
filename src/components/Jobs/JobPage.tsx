@@ -135,7 +135,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { LocationOn, AttachMoney } from '@mui/icons-material';
 import { apiBaseURL } from '../../../config/route.config';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, InputAdornment } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, } from '@mui/material';
 
 interface Job {
   jobId: string;
@@ -154,8 +154,8 @@ interface Job {
 }
 
 const JobPage = () => {
-  const [view, setView] = useState<'grid' | 'list'>('grid');
-  const [sortBy, setSortBy] = useState<string>('Default');
+  const [view, ] = useState<'grid' | 'list'>('grid');
+  const [, setSortBy] = useState<string>('Default');
   const [jobList, setJobList] = useState<Job[]>([]);
   const [filteredJobList, setFilteredJobList] = useState<Job[]>([]);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
