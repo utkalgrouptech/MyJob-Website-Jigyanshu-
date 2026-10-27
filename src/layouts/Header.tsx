@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { menuData } from '@/utils/layouts';
 import { logo } from '@/assets/layouts';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
+
 import { UserCircleIcon, BriefcaseIcon } from "@heroicons/react/24/solid";
 const Header: React.FC = () => {
   return (
