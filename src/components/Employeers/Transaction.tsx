@@ -397,8 +397,8 @@ const CreateJob = () => {
     workPlaceType: "",
   });
   const [open, setOpen] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [error] = useState("");
+  const [success] = useState("");
   // Retrieve company id from localStorage and set it into the formData
   useEffect(() => {
     const storedData = localStorage.getItem("userData");

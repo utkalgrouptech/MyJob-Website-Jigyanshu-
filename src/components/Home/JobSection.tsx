@@ -85,7 +85,7 @@ const JobSection: React.FC = () => {
   };
 
   const handleFilter = () => {
-    const filtered = jobList.filter((job: any) => {
+    const filtered = jobList.filter((job: Job) => {
       return (
         (searchLocation === "" || job.jobLocation?.toLowerCase().includes(searchLocation.toLowerCase())) &&
         (searchDegName === "" || job.degName.toLowerCase().includes(searchDegName.toLowerCase())) &&

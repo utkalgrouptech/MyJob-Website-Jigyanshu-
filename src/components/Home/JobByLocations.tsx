@@ -50,7 +50,7 @@ const JobsByLocation: React.FC = () => {
           Explore Jobs by Location
         </h2>
         <p className="text-center text-gray-600 text-lg mb-10">
-          Find your next career move in the world's best cities.
+          Find your next career move in the world&apos;s best cities.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {jobLocations.map((location, index) => (

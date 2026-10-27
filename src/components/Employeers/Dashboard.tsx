@@ -77,7 +77,7 @@ const Dashboard: React.FC = () => {
           totalCompanies: totalCompanies.data?.length,
           totalCandidates: totalCandidates.data?.length,
         });
-      } catch (err) {
+      } catch {
         setError('Failed to fetch data. Please try again later.');
       } finally {
         setLoading(false);
