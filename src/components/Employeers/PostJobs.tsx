@@ -11,10 +11,15 @@ import {
   DialogContent,
   DialogTitle,
 } from '@mui/material';
-import { Work, LocationOn } from '@mui/icons-material';
+import {LocationOn } from '@mui/icons-material';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { apiBaseURL } from '../../../config/route.config';
+
+interface Organization {
+  compId: string;
+  organizationName: string;
+}
 
 const PostJobModal = () => {
   const [open, setOpen] = useState(false);
@@ -30,7 +35,7 @@ const PostJobModal = () => {
     jobType: '',
     workPlaceType: '',
   });
-  const [organizationData, setOrganizationData] = useState<any[]>([]);
+  const [organizationData, setOrganizationData] = useState<Organization[]>([]);
 
   const jobTypes = ['Full-time', 'Part-time', 'Contract', 'Internship'];
   const workPlaceTypes = ['On-site', 'Remote', 'Hybrid'];
@@ -52,12 +57,12 @@ const PostJobModal = () => {
         // Update the organizationData state
         setOrganizationData(response.data.data); // Ensure response.data is an array
         
-      } catch (error:any) {
-        // Log the error in detail
-        console.error('Error fetching organizations:', error);
-        if (error.response) {
-          console.error('Response Error Data:', error.response.data);
-          console.error('Response Status:', error.response.status);
+      } catch (error: unknown) {
+  console.error('Error fetching organizations:', error);
+
+  if (axios.isAxiosError(error) && error.response) {
+    console.error('Response Error Data:', error.response.data);
+    console.error('Response Status:', error.response.status);
         }
       }
     };
@@ -66,19 +71,23 @@ const PostJobModal = () => {
   }, []);
   console.log('Full Response:', organizationData);
 
-  const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+ const handleChange = (
+  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+) => {
+  const { name, value } = e.target;
 
-    // Log organization details when a Company ID is selected
-    if (name === 'compId') {
-      const selectedOrg = organizationData.find((org: any) => org.compId === value);
-      console.log('Selected Organization Details:', selectedOrg);
-    }
-  };
+  setFormData((prevData) => ({
+    ...prevData,
+    [name]: value,
+  }));
+
+  if (name === 'compId') {
+    const selectedOrg = organizationData.find(
+      (org) => org.compId === value
+    );
+    console.log('Selected Organization Details:', selectedOrg);
+  }
+};
 
   const handleSubmit = async () => {
     try {
@@ -104,11 +113,13 @@ const PostJobModal = () => {
         jobType: '',
         workPlaceType: '',
       });
-    } catch (error: any) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error Posting Job',
-        text: error.response?.data?.message || 'Something went wrong!',
+    } catch (error: unknown) {
+  Swal.fire({
+    icon: 'error',
+    title: 'Error Posting Job',
+    text: axios.isAxiosError(error)
+      ? error.response?.data?.message || 'Something went wrong!'
+      : 'Something went wrong!',
       });
     }
   };
@@ -139,7 +150,7 @@ const PostJobModal = () => {
   onChange={handleChange}
 >
   {organizationData.length > 0 ? (
-    organizationData.map((org: any) => (
+    organizationData.map((org) => (
       <MenuItem key={org?.compId} value={org?.compId}>
         {org?.organizationName}
       </MenuItem>
