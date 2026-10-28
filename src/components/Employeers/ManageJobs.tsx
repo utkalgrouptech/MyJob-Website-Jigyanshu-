@@ -422,13 +422,13 @@ const ManageJobs: React.FC = () => {
         // Update the organizationData state
         setOrganizationData(response.data.data); // Ensure response.data is an array
         
-      } catch (error:any) {
+      } catch (error:unknown) {
         // Log the error in detail
         console.error('Error fetching organizations:', error);
-        if (error.response) {
-          console.error('Response Error Data:', error.response.data);
-          console.error('Response Status:', error.response.status);
-        }
+        if (axios.isAxiosError(error) && error.response) {
+    console.error("Response Error Data:", error.response.data);
+    console.error("Response Status:", error.response.status);
+  }
       }
     };
   
@@ -472,11 +472,13 @@ const ManageJobs: React.FC = () => {
         jobType: '',
         workPlaceType: '',
       });
-    } catch (error: any) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error Posting Job',
-        text: error.response?.data?.message || 'Something went wrong!',
+    }  catch (error: unknown) {
+  Swal.fire({
+    icon: "error",
+    title: "Error Posting Job",
+    text: axios.isAxiosError(error)
+      ? error.response?.data?.message || "Something went wrong!"
+      : "Something went wrong!",
       });
     }
   };
@@ -818,7 +820,7 @@ const ManageJobs: React.FC = () => {
   onChange={handleChange}
 >
   {organizationData.length > 0 ? (
-    organizationData.map((org: any) => (
+    organizationData.map((org) => (
       <MenuItem key={org?.compId} value={org?.compId}>
         {org?.organizationName}
       </MenuItem>
