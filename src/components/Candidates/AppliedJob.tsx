@@ -1,6 +1,7 @@
+
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import {
   Box,
@@ -28,32 +29,43 @@ interface Job {
 }
 
 const AppliedJobsPage = () => {
-  const storedUserId= localStorage.getItem('userData');
-
   const [appliedJobs, setAppliedJobs] = useState<Job[]>([]);
-  const [userId]= useState(storedUserId); // Replace with actual user ID
+  const [userId, setUserId] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    fetchAppliedJobs();
-  }, [page]);
+    const storedUserId = localStorage.getItem("userData");
+    setUserId(storedUserId);
+  }, []);
 
-  const fetchAppliedJobs = async () => {
+  const fetchAppliedJobs = useCallback(async () => {
+    if (!userId) return;
+
     try {
-      const response = await axios.get(`${apiBaseURL}/RequestApplication/get/${userId}`);
+      const response = await axios.get(
+        `${apiBaseURL}/RequestApplication/get/${userId}`
+      );
       setAppliedJobs(response.data.data);
       setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error("Error fetching applied jobs", error);
     }
-  };
+  }, [userId]);
 
+  useEffect(() => {
+    fetchAppliedJobs();
+  }, [page, fetchAppliedJobs]);
 
-
-  const updateApplicationStatus = async (id: string, status: string): Promise<void> => {
+  const updateApplicationStatus = async (
+    id: string,
+    status: string
+  ): Promise<void> => {
     try {
-      await axios.put(`${apiBaseURL}/RequestApplication/update/${id}`, { status });
+      await axios.put(
+        `${apiBaseURL}/RequestApplication/update/${id}`,
+        { status }
+      );
       fetchAppliedJobs();
     } catch (error) {
       console.error("Error updating application status", error);
@@ -77,6 +89,7 @@ const AppliedJobsPage = () => {
               <TableCell><strong>Action</strong></TableCell>
             </TableRow>
           </TableHead>
+
           <TableBody>
             {appliedJobs.map((job) => (
               <TableRow key={job.id}>
@@ -90,7 +103,9 @@ const AppliedJobsPage = () => {
                     </Typography>
                   </Box>
                 </TableCell>
+
                 <TableCell>{job.appliedDate}</TableCell>
+
                 <TableCell>
                   <Button
                     variant="outlined"
@@ -102,6 +117,7 @@ const AppliedJobsPage = () => {
                     Download CV
                   </Button>
                 </TableCell>
+
                 <TableCell>
                   <Typography
                     variant="body2"
@@ -111,12 +127,15 @@ const AppliedJobsPage = () => {
                     {job.status}
                   </Typography>
                 </TableCell>
+
                 <TableCell>
                   <Button
                     variant="contained"
                     color="primary"
                     size="small"
-                    onClick={() => updateApplicationStatus(job.id, "Reviewed")}
+                    onClick={() =>
+                      updateApplicationStatus(job.id, "Reviewed")
+                    }
                   >
                     Mark as Reviewed
                   </Button>
@@ -128,7 +147,12 @@ const AppliedJobsPage = () => {
       </TableContainer>
 
       <Box mt={4} display="flex" justifyContent="center">
-        <Pagination count={totalPages} page={page} onChange={(e, value) => setPage(value)} color="primary" />
+        <Pagination
+          count={totalPages}
+          page={page}
+          onChange={(_e, value) => setPage(value)}
+          color="primary"
+        />
       </Box>
     </Box>
   );
