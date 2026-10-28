@@ -444,11 +444,13 @@ const CreateJob = () => {
         jobType: "",
         workPlaceType: "",
       }));
-    } catch (error: any) {
+    } catch (error: unknown) {
       Swal.fire({
-        icon: "error",
-        title: "Error Creating Job",
-        text: error.response?.data?.message || "Something went wrong!",
+    icon: "error",
+    title: "Error Creating Job",
+    text: axios.isAxiosError(error)
+      ? error.response?.data?.message || "Something went wrong!"
+      : "Something went wrong!",
       });
     }
   };

@@ -186,16 +186,18 @@ const AllCandidates: React.FC = () => {
           text: result.message || "An error occurred while updating the organization.",
         })
       }
-    } catch (error: any) {
-      Swal.fire({
-        icon: "error",
-        title: "Error Updating Candidate Profile",
-        text: error.message || "Something went wrong!",
+    } catch (error: unknown) {
+  Swal.fire({
+    icon: "error",
+    title: "Error Updating Candidate Profile",
+    text: error instanceof Error
+      ? error.message
+      : "Something went wrong!",
       })
     }
   }
 
-  const handleStatusChange = async (userId: string, value: any) => {
+  const handleStatusChange = async (userId: string, value: number) => {
     try {
       const response = await fetch(`${apiBaseURL}/personalDetails/update/${userId}`, {
         method: "PUT",
@@ -231,11 +233,13 @@ const AllCandidates: React.FC = () => {
           text: result.message || "An error occurred while updating the status.",
         })
       }
-    } catch (error: any) {
-      Swal.fire({
-        icon: "error",
-        title: "Error Updating Status",
-        text: error.message || "Something went wrong!",
+    } catch (error: unknown) {
+  Swal.fire({
+    icon: "error",
+    title: "Error Updating Status",
+    text: error instanceof Error
+      ? error.message
+      : "Something went wrong!",
       })
     }
   }
@@ -309,16 +313,19 @@ const AllCandidates: React.FC = () => {
   
       fileInputRef.current!.value = ""; // Clear file input
   
-    } catch (err: any) {
-      console.error("Create Personal Details Error:", err);
-  
-      setError("Error creating user. Please try again.");
-  
-      // Error Alert
-      Swal.fire({
-        icon: "error",
-        title: "Error Creating User",
-        text: err.response?.data?.message || "Something went wrong!",
+    } catch (err: unknown) {
+  console.error("Create Personal Details Error:", err);
+
+  setError("Error creating user. Please try again.");
+
+  Swal.fire({
+    icon: "error",
+    title: "Error Creating User",
+    text: axios.isAxiosError(err)
+      ? err.response?.data?.message || "Something went wrong!"
+      : err instanceof Error
+        ? err.message
+        : "Something went wrong!",
       });
     } finally {
       setLoading(false);
@@ -403,7 +410,7 @@ const AllCandidates: React.FC = () => {
                   <InputLabel>Status</InputLabel>
                   <Select
                     value={candidate.status} // Assuming org.status is 0 or 1
-                    onChange={(e) => handleStatusChange(candidate.userId, e.target.value)}
+                    onChange={(e) => handleStatusChange(candidate.userId, Number(e.target.value))}
                     label="Status"
                   >
                     <MenuItem value={1}>Active</MenuItem>
