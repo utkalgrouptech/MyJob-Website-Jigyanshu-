@@ -358,6 +358,10 @@ interface Job {
     description: string
   }
 }
+interface Organization {
+  compId: string;
+  organizationName: string;
+}
 
 const ManageJobs: React.FC = () => {
   const [search, setSearch] = useState("")
@@ -381,7 +385,7 @@ const ManageJobs: React.FC = () => {
       jobType: '',
       workPlaceType: '',
     });
-    const [organizationData, setOrganizationData] = useState<any[]>([]);
+   const [organizationData, setOrganizationData] = useState<Organization[]>([]);
   
     const jobTypes = ['Full-time', 'Part-time', 'Contract', 'Internship'];
     const workPlaceTypes = ['On-site', 'Remote', 'Hybrid'];
@@ -430,7 +434,7 @@ const ManageJobs: React.FC = () => {
   
     fetchOrganizations();
   }, []);
-  const handleChange = (e: any) => {
+  const handleChange = ( e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -439,7 +443,7 @@ const ManageJobs: React.FC = () => {
 
     // Log organization details when a Company ID is selected
     if (name === 'compId') {
-      const selectedOrg = organizationData.find((org: any) => org.compId === value);
+      const selectedOrg = organizationData.find((org) => org.compId === value);
       console.log('Selected Organization Details:', selectedOrg);
     }
   };
@@ -477,7 +481,7 @@ const ManageJobs: React.FC = () => {
     }
   };
 
-  const handleRowClick = (job:any) => {
+  const handleRowClick = (job: Job) => {
     setSelectedJob(job);
     setDetailsOpen(true);
   };
@@ -555,7 +559,7 @@ const ManageJobs: React.FC = () => {
     }
   }
 
-      const handleStatusChange = async (compId: string, value: any) => {
+      const handleStatusChange = async (compId: string, value: number) => {
         try {
           const response = await fetch(
             `${apiBaseURL}/postedjob/update/${compId}`,
@@ -589,11 +593,13 @@ const ManageJobs: React.FC = () => {
               text: result.message || "An error occurred while updating the status.",
             });
           }
-        } catch (error: any) {
+        } catch (error: unknown) {
           Swal.fire({
             icon: "error",
             title: "Error Updating Status",
-            text: error.message || "Something went wrong!",
+           text: error instanceof Error
+      ? error.message
+      : "Something went wrong!",
           });
         }
       };
@@ -642,7 +648,7 @@ const ManageJobs: React.FC = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {jobData.map((job) => (
+              {paginatedJobs.map((job) => (
                 <TableRow key={job?.jobId}>
                   <TableCell>{job?.degName}</TableCell>
                   <TableCell>
