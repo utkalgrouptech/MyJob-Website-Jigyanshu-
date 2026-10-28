@@ -346,7 +346,7 @@ interface Job {
   yearsOfExperience: number
   requirements: string
   jobType: string
-  status: string
+  status: string  | number
   createdAt: string
   organization: {
     organizationName: string
@@ -694,7 +694,7 @@ const ManageJobs: React.FC = () => {
     <InputLabel>Status</InputLabel>
     <Select
       value={job.status} // Assuming org.status is 0 or 1
-      onChange={(e) => handleStatusChange(job.jobId, e.target.value)}
+      onChange={(e) => handleStatusChange(job.jobId,  Number(e.target.value))}
       label="Status"
     >
       <MenuItem value={1}>Active</MenuItem>
